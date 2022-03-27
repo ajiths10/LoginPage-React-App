@@ -13,10 +13,28 @@ const Login = (props) => {
   const [enteredCollage , setEnteredCollage] = useState('');
   const [collageValid,setCollageIsValid]= useState('');
 
+
+  //to uderStand useEffect
   useEffect(()=>{
-    setFormIsValid(
-      enteredEmail.includes('@') && enteredCollage.includes('collage') && enteredPassword.trim().length > 6
-    );
+    console.log('Effect Running...');
+    return () =>{
+      console.log('Effect return area...');
+    }
+  },[]);
+  //
+
+  useEffect(()=>{
+    const identifier = setTimeout(() => {
+      console.log('form validation!')
+      setFormIsValid(
+        enteredEmail.includes('@') && enteredCollage.includes('collage') && enteredPassword.trim().length > 6
+        );
+    }, 2000);
+
+    return () => {
+      console.log('cleanUp');
+      clearTimeout(identifier);
+    };
 
   },[enteredEmail, enteredCollage ,enteredPassword]);
 
