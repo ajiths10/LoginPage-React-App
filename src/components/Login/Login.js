@@ -6,7 +6,7 @@ import Button from "../UI/Button/Button";
 
 const emailReducer = (state, action) => {
   if (action.type === "USER_INPUT") {
-    return { value: action.val, isValis: action.val.includes("@") };
+    return { value: action.val, isValid: action.val.includes("@") };
   }
   if (action.type === "INPUT_BLUR") {
     return { value: state.value, isValid: state.value.includes("@") };
@@ -16,7 +16,7 @@ const emailReducer = (state, action) => {
 
 const passwordReducer = (state, action) => {
   if (action.type === "PASSWORD_INPUT") {
-    return { value: action.val, isValis: action.val.trim().length > 6 };
+    return { value: action.val, isValid: action.val.trim().length > 6 };
   }
   if (action.type === "PASSWORD_BLUR") {
     return { value: state.value, isValid: state.value.trim().length > 6 };
@@ -26,7 +26,7 @@ const passwordReducer = (state, action) => {
 
 const collageReducer = (state, action) => {
   if (action.type === "COLLAGE_INPUT") {
-    return { value: action.val, isValis: action.val.includes("collage") };
+    return { value: action.val, isValid: action.val.includes("collage") };
   }
   if (action.type === "COLLAGE_BLUR") {
     return { value: state.value, isValid: state.value.includes("collage") };
@@ -65,47 +65,51 @@ const Login = (props) => {
   }, []);
   //
 
-  // useEffect(()=>{
-  //   const identifier = setTimeout(() => {
-  //     console.log('form validation!')
-  //     setFormIsValid(
-  //       enteredEmail.includes('@') && enteredCollage.includes('collage') && enteredPassword.trim().length > 6
-  //       );
-  //   }, 2000);
+  const { isValid: emailIsValid } = emailState;
+  const { isValid: passwordIsValid } = passwordState;
+  const { isValid: collageIsValid } = collageState;
 
-  //   return () => {
-  //     console.log('cleanUp');
-  //     clearTimeout(identifier);
-  //   };
+  useEffect(()=>{
+    const identifier = setTimeout(() => {
+      console.log('form validation!')
+      setFormIsValid(
+        emailIsValid && collageIsValid && passwordIsValid
+        );
+    }, 1000);
 
-  // },[enteredEmail, enteredCollage ,enteredPassword]);
+    return () => {
+      console.log('cleanUp');
+      clearTimeout(identifier);
+    };
+
+  },[emailIsValid, collageIsValid , passwordIsValid]);
 
   const emailChangeHandler = (event) => {
     dispatchEmail({ type: "USER_INPUT", val: event.target.value });
-    setFormIsValid(
-      event.target.value.includes("@") &&
-        collageState.isValid &&
-        passwordState.isValid
-    );
+    // setFormIsValid(
+    //   event.target.value.includes("@") &&
+    //     collageState.isValid &&
+    //     passwordState.isValid
+    // );
   };
 
   const passwordChangeHandler = (event) => {
     dispatchPassword({ type: "PASSWORD_INPUT", val: event.target.value });
 
-    setFormIsValid(
-      emailState.isValid &&
-        collageState.isValid &&
-        event.target.value.trim().length > 6
-    );
+    // setFormIsValid(
+    //   emailState.isValid &&
+    //     collageState.isValid &&
+    //     event.target.value.trim().length > 6
+    // );
   };
 
   const collageChangeHandler = (event) => {
     dispatchcollage({ type: "COLLAGE_INPUT", val: event.target.value });
-    setFormIsValid(
-      emailState.isValid &&
-        event.target.value.includes("collage") &&
-        passwordState.isValid
-    );
+    // setFormIsValid(
+    //   emailState.isValid &&
+    //     event.target.value.includes("collage") &&
+    //     passwordState.isValid
+    // );
   };
   const validateCollageHandler = () => {
     dispatchcollage({ type: "COLLAGE_BLUR" });
