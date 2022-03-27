@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState , useEffect} from 'react';
 
 import Card from '../UI/Card/Card';
 import classes from './Login.module.css';
@@ -10,12 +10,15 @@ const Login = (props) => {
   const [enteredPassword, setEnteredPassword] = useState('');
   const [passwordIsValid, setPasswordIsValid] = useState();
   const [formIsValid, setFormIsValid] = useState(false);
+  const [enteredCollage , setEnteredCollage] = useState('');
+  const [collageValid,setCollageIsValid]= useState('');
 
-  useEffect(() => {
+  useEffect(()=>{
     setFormIsValid(
-      enteredEmail.includes('@') && enteredPassword.trim().length > 6
+      enteredEmail.includes('@') && enteredCollage.includes('collage') && enteredPassword.trim().length > 6
     );
-  }, [enteredEmail, enteredPassword]);
+
+  },[enteredEmail, enteredCollage ,enteredPassword]);
 
   const emailChangeHandler = (event) => {
     setEnteredEmail(event.target.value);
@@ -23,6 +26,13 @@ const Login = (props) => {
 
   const passwordChangeHandler = (event) => {
     setEnteredPassword(event.target.value);
+  };
+
+  const collageChangeHandler = (event) =>{
+    setEnteredCollage(event.target.value);
+  };
+  const validateCollageHandler = () => {
+    setCollageIsValid(enteredCollage.includes('collage'));
   };
 
   const validateEmailHandler = () => {
@@ -53,6 +63,20 @@ const Login = (props) => {
             value={enteredEmail}
             onChange={emailChangeHandler}
             onBlur={validateEmailHandler}
+          />
+        </div>
+        <div
+          className={`${classes.control} ${
+            collageValid === false ? classes.invalid : ''
+          }`}
+        >
+          <label htmlFor="email">Collage</label>
+          <input
+            type="text"
+            id="collage"
+            value={enteredCollage}
+            onChange={collageChangeHandler}
+            onBlur={validateCollageHandler}
           />
         </div>
         <div
